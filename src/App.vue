@@ -19,23 +19,18 @@ body {
   font-family: $primaryFont;
 }
 
-a {
-  width: 300px;
-  margin: 20px 0;
-  padding: 20px;
-  background: $purple;
-  color: $gold;
-  border: 5px solid $gold;
-  text-align: center;
-  font-weight: 900;
-  font-size: 2em;
-  text-transform: uppercase;
-  text-decoration: none;
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh;
 
-  &:hover {
-    background: $gold;
-    color: $purple;
-    cursor: pointer;
-  }
+}
+
+h1 {
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: 3em;
+  margin-top: 0;
 }
 </style>
