@@ -4,7 +4,7 @@
         <h1>Games</h1>
         <h2>At Your Instrument</h2>
         <div class="games-row">
-            <GameCircle :isGameActive="true">Play that Chord</GameCircle>
+            <GameCircle :isGameActive="true" :gameLink="`three-note-chords`">Play that Chord</GameCircle>
             <GameCircle :isGameActive="false">Play that Scale</GameCircle>
         </div>
         <h2>Multiple Choice</h2>
