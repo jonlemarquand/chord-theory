@@ -12,7 +12,7 @@ export default {
 footer {
     background: $purple;
     color: $white;
-    min-height: 120px;
+    min-height: 80px;
     display: flex;
     justify-content: center;
     padding-top: 30px;

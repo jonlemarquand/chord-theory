@@ -11,7 +11,7 @@
             </div>
             <div class="theGame" v-else>
                 <div class="chordSection">
-                    <p>Play</p>
+                    <p>Chord {{ questionNumber }}/40</p>
                     <div class="chord">{{ currentChord }}</div>
                 </div>
                 <transition mode="out-in">
@@ -21,6 +21,10 @@
                     </div>
                     <div class="answer" v-else>
                         <div class="chord">{{ currentAnswer }}</div>
+                        <div class="nextButtons">
+                            <button class="rightAnswer" @click="rightAnswer"><font-awesome-icon :icon="['fas', 'check']" /></button>
+                            <button class="wrongAnswer" @click="wrongAnswer">&times;</button>
+                        </div>
                     </div>
                 </transition>
                 <div class="scoreSection">
@@ -43,7 +47,8 @@ export default {
             answerActive: false,
             countdown: 5,
             rightScore: 0,
-            wrongScore: 0
+            wrongScore: 0,
+            questionNumber: 1,
         }
     },
     methods: {
@@ -52,6 +57,14 @@ export default {
             setTimeout(() => {
                 this.countdown--;
             }, 2000);
+        },
+        rightAnswer() {
+            this.rightScore ++
+            this.questionNumber ++
+        },
+        wrongAnswer() {
+            this.wrongScore ++
+            this.questionNumber ++
         }
     },
     watch: {
@@ -66,6 +79,15 @@ export default {
                     }
             },
         },
+        questionNumber: {
+            handler(value) {
+                if (value < 40) {
+                    this.answerActive = false;
+                    this.countdown = 6;
+                    console.log(this.activeAnswer);
+                }
+            }
+        }
     }
 }
 </script>
@@ -122,6 +144,12 @@ export default {
     font-size: 64px;
 }
 
+.score {
+    font-family: $primaryFont;
+    font-weight: 700;
+    font-size: 36px;
+}
+
 }
 
 .v-enter-from, .v-leave-to {
@@ -138,5 +166,39 @@ export default {
 
 p {
     color: black;
+}
+
+.nextButtons {
+    margin-top: 40px;
+    width: 300px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.rightAnswer, .wrongAnswer {
+    border-radius: 50%;
+    border: 0;
+    background: $purple;
+    color: $white;
+    height: 100px;
+    width: 100px;
+    font-weight: 900;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:hover {
+        color: $purple;
+        background: $gold;
+        cursor: pointer;
+    }
+}
+
+.rightAnswer {
+    font-size: 48px;
+}
+
+.wrongAnswer {
+    font-size: 72px;
 }
 </style>

@@ -1,5 +1,9 @@
 import { createApp } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faCheck } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+
 import App from './App.vue'
 
 //Import components here
@@ -11,6 +15,10 @@ import TheFooter from './components/Shared/TheFooter/TheFooter';
 import TheNavBar from './components/Shared/TheNavBar/TheNavBar';
 
 const app = createApp(App);
+
+library.add(faCheck)
+
+app.component('font-awesome-icon', FontAwesomeIcon)
 
 app.component('the-footer', TheFooter);
 app.component('nav-bar', TheNavBar);
