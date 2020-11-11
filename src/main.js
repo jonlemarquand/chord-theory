@@ -28,15 +28,24 @@ const router = createRouter({
     routes: [
     {
         path: '/',
-        component: Homescreen
+        component: Homescreen,
+        meta: {
+            title: 'Chord Theory'
+        }
     },
     {
         path: '/games',
-        component: GamesList
+        component: GamesList,
+        meta: {
+            title: 'Games | Chord Theory'
+        }
     },
     {
         path: '/three-note-chords',
-        component: ThreeNoteChords
+        component: ThreeNoteChords,
+        meta: {
+            title: 'Three Note Chords | Chord Theory'
+        }
     },
     ],
     linkActiveClass: 'active'

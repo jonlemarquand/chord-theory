@@ -6,7 +6,14 @@
 
 <script>
 export default {
-    
+  watch: {
+    '$route':{
+      handler: (to) => {
+        document.title = to.meta.title || 'Chord Theory'
+      },
+      immediate: true
+    }
+  },
 }
 </script>
 
