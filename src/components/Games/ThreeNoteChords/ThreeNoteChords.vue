@@ -2,14 +2,14 @@
         <nav-bar></nav-bar>
         <div id="threeNoteChords">
             <transition mode="out-in">
-            <div class="howToPlay" v-if="!playMode">
+            <div class="howToPlay" v-if="playMode === 'howTo'">
                 <h1>Three Note Chords</h1>
                 <h2>How to Play</h2>
                 <p>Once you click start, we'll generate a new chord. You then have 5 seconds to play the correct chord on your instrument.</p>
                 <p>It's self-scoring, so you only cheat yourself!</p>
                 <button @click="readyUp">Start</button>
             </div>
-            <div class="theGame" v-else>
+            <div class="theGame" v-else-if="playMode === 'play'">
                 <div class="chordSection">
                     <p>Chord {{ questionNumber }}/40</p>
                     <div class="chord">{{ currentChord }}</div>
@@ -32,6 +32,18 @@
                     <div class="score">{{ rightScore }} - {{ wrongScore }}</div>
                 </div>
             </div>
+            <div class="theAnswers" v-else-if="playMode === 'answer'">
+                <h1>Three Note Chords</h1>
+                <h2>Results</h2>
+                <p class="chord">You got {{rightScore}}/40</p>
+                <p>Here's how you answered:</p>
+                <ul class="results-grid">
+                    <li v-for="answer in this.answerList" :key="answer.answerNo">
+                        {{answer.answerNo}}. {{answer.answerChord}} - {{answer.answerNotes}}
+                    </li>
+                </ul>
+                <button @click="readyUp">Play Again?</button>
+            </div>
             </transition>
         </div>
         <the-footer></the-footer>
@@ -41,7 +53,7 @@
 export default {
     data() {
         return {
-            playMode: false,
+            playMode: "howTo",
             currentChord: "Eb7",
             currentAnswer: "Eb Db G",
             answerActive: false,
@@ -230,21 +242,34 @@ export default {
                     name: "BMaj7",
                     chord: "B Eb Bb"
                 }
-            ]
+            ],
+            answerList: [],
         }
     },
     methods: {
+        addAnswertoList(theAnswer) {
+            const newAnswer = {
+                answerNo: this.questionNumber,
+                answerChord: this.currentChord,
+                answerNotes: this.currentAnswer,
+                answerAnswer: theAnswer
+            }
+            console.log(newAnswer)
+            this.answerList.push(newAnswer)
+        },
         readyUp() {
-            this.playMode = true;
+            this.playMode = "play";
             setTimeout(() => {
                 this.countdown--;
             }, 2000);
         },
         rightAnswer() {
+            this.addAnswertoList(true)
             this.rightScore ++
             this.questionNumber ++
         },
         wrongAnswer() {
+            this.addAnswertoList(false)
             this.wrongScore ++
             this.questionNumber ++
         }
@@ -263,7 +288,10 @@ export default {
         },
         questionNumber: {
             handler(value) {
-                if (value < 40) {
+                if (value > 2) {
+                    this.playMode = "answer"
+                }
+                if (value <= 2) {
                     const randQuestion = Math.floor(Math.random() * (36 - 1) + 1);
                     this.countdown = 6;
                     this.currentChord = this.chords[randQuestion]["name"];
@@ -293,7 +321,7 @@ export default {
     align-items: center;
 }
 
-.howToPlay {
+.howToPlay, .theAnswers {
     button {
         color: $gold;
         background: $purple;
@@ -321,19 +349,23 @@ export default {
         font-weight: 700;
         font-size: 1.17em;
     }
-
+.score {
+    font-family: $primaryFont;
+    font-weight: 700;
+    font-size: 36px;
+}
+}
 .chord {
     font-family: $primaryFont;
     font-weight: 900;
     font-size: 64px;
 }
 
-.score {
-    font-family: $primaryFont;
-    font-weight: 700;
-    font-size: 36px;
-}
 
+.theAnswers {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .v-enter-from, .v-leave-to {
