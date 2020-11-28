@@ -46,7 +46,7 @@
                         <div v-else class="result-circle wrong">&times;</div>
                     </li>
                 </ul>
-                <button @click="readyUp">Play Again?</button>
+                <button @click="startAgain">Play Again?</button>
             </div>
             </transition>
         </div>
@@ -272,6 +272,13 @@ export default {
             this.rightScore ++
             this.questionNumber ++
         },
+        startAgain() {
+            this.rightScore = 0;
+            this.wrongScore = 0;
+            this.questionNumber = 1;
+            this.answerList = [];
+            this.readyUp();
+        },
         wrongAnswer() {
             this.addAnswertoList(false)
             this.wrongScore ++
@@ -292,10 +299,10 @@ export default {
         },
         questionNumber: {
             handler(value) {
-                if (value > 20) {
+                if (value > 2) {
                     this.playMode = "answer"
                 }
-                if (value <= 20) {
+                if (value <= 2) {
                     const randQuestion = Math.floor(Math.random() * (36 - 1) + 1);
                     this.countdown = 6;
                     this.currentChord = this.chords[randQuestion]["name"];
