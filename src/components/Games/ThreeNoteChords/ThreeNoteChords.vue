@@ -299,10 +299,10 @@ export default {
         },
         questionNumber: {
             handler(value) {
-                if (value > 2) {
+                if (value > 20) {
                     this.playMode = "answer"
                 }
-                if (value <= 2) {
+                if (value <= 20) {
                     const randQuestion = Math.floor(Math.random() * (36 - 1) + 1);
                     this.countdown = 6;
                     this.currentChord = this.chords[randQuestion]["name"];
