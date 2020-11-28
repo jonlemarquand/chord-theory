@@ -11,7 +11,7 @@
             </div>
             <div class="theGame" v-else-if="playMode === 'play'">
                 <div class="chordSection">
-                    <p>Chord {{ questionNumber }}/40</p>
+                    <p>Chord {{ questionNumber }}/20</p>
                     <div class="chord">{{ currentChord }}</div>
                 </div>
                 <transition mode="out-in">
@@ -35,11 +35,15 @@
             <div class="theAnswers" v-else-if="playMode === 'answer'">
                 <h1>Three Note Chords</h1>
                 <h2>Results</h2>
-                <p class="chord">You got {{rightScore}}/40</p>
+                <p class="chord">You got {{rightScore}}/20</p>
                 <p>Here's how you answered:</p>
                 <ul class="results-grid">
                     <li v-for="answer in this.answerList" :key="answer.answerNo">
-                        {{answer.answerNo}}. {{answer.answerChord}} - {{answer.answerNotes}}
+                        <div><strong>{{answer.answerNo}}. {{answer.answerChord}}</strong> ({{answer.answerNotes}})</div>
+                        <div v-if="answer.answerAnswer" class="result-circle right">
+                            <font-awesome-icon  :icon="['fas', 'check']" />
+                        </div>
+                        <div v-else class="result-circle wrong">&times;</div>
                     </li>
                 </ul>
                 <button @click="readyUp">Play Again?</button>
@@ -288,10 +292,10 @@ export default {
         },
         questionNumber: {
             handler(value) {
-                if (value > 2) {
+                if (value > 20) {
                     this.playMode = "answer"
                 }
-                if (value <= 2) {
+                if (value <= 20) {
                     const randQuestion = Math.floor(Math.random() * (36 - 1) + 1);
                     this.countdown = 6;
                     this.currentChord = this.chords[randQuestion]["name"];
@@ -366,6 +370,60 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
+    max-width: 1200px;
+    
+    .results-grid {
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        height: 320px;
+        width: 1000px;
+
+        li {
+            padding: 5px;
+            margin: 10px 20px;
+            width: 180px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: $black;
+        
+            &:hover {
+                background: $purple;
+                color: $white;
+            }
+        }
+    @media (max-width: $mobile ) {
+        width: 100%;
+        height: auto;
+    }
+    }
+    .result-circle {
+        border-radius: 50%;
+        border: 3px solid $purple;
+        height: 25px;
+        width: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    
+        &.right {
+            color: $white;
+            background: $purple;
+        }
+
+        &.wrong {
+            font-size: 28px;
+            font-weight: 700;
+        }
+    }
+
+    .chord {
+        margin: 24px 0;
+    }
 }
 
 .v-enter-from, .v-leave-to {
